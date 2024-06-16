@@ -11,7 +11,10 @@ class StartCommand extends Command
 
     public function handle(): void
     {
-        // Отправляем ответ с уровнем отладки
-        $this->replyWithMessage(['text' => "Debug level"]);
+        $this->replyWithMessage([
+            'text' => translate('start-text', [
+                'first_name' => auth()->user()->first_name,
+            ]),
+        ]);
     }
 }

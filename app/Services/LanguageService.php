@@ -61,6 +61,10 @@ class LanguageService
         array $replace = null
     ): string
     {
+        if(empty($this->language[trim($key)])){
+            return sprintf('Translation for the key "%s" not found for language code "%s"', $key, app()->getLocale());
+        }
+
         $translation = $this->language[trim($key)] ?? $key;
 
         if (is_array($replace)) {
@@ -110,7 +114,7 @@ class LanguageService
                 ->first();
 
             if(isset($lang->id) and $lang->language !== null){
-                app()->setLocale($lang->language->value);
+                app()->setLocale($lang->language->code);
             }
         }
     }

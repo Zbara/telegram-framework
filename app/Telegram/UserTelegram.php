@@ -24,6 +24,9 @@ class UserTelegram
     {
         if ($userData->id !== null) {
             $user = User::query()
+                ->with([
+                    'language'
+                ])
                 ->where('telegram_id', $userData->id)
                 ->first();
 

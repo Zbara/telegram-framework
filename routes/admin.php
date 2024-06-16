@@ -27,7 +27,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('language')->group(function () {
         Route::get('/getLanguages', [\App\Admin\Controllers\LanguageController::class, 'getLanguages']);
+        Route::get('/getLanguageText', [\App\Admin\Controllers\LanguageController::class, 'getLanguageText']);
         Route::post('/setStatus', [\App\Admin\Controllers\LanguageController::class, 'setStatus']);
+        Route::post('/createdLangText', [\App\Admin\Controllers\LanguageController::class, 'createdLangText']);
+        Route::post('/editLangText', [\App\Admin\Controllers\LanguageController::class, 'editLangText']);
+        Route::post('/editLangOne', [\App\Admin\Controllers\LanguageController::class, 'editLangOne']);
     });
 
     Route::prefix('settings')->group(function () {

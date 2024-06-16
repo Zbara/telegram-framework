@@ -14,4 +14,6 @@ class TranslationText extends Model
         'locale_id',
         'translation'
     ];
+
+    public $timestamps = false;
 }

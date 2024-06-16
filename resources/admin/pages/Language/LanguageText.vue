@@ -27,7 +27,7 @@
                             {{ item }}
                         </td>
                         <td v-for="language in languageItems">
-                            <textarea rows="5" class="form-control" :data-id="item" :data-lang="language.value" @blur="saveLangText">{{ findValue(item, language.value) }}</textarea>
+                            <textarea rows="5" class="form-control" :data-id="item" :data-lang="language.code" @blur="saveLangText">{{ findValue(item, language.code) }}</textarea>
                         </td>
                         <td class="text-nowrap text-muted">
                             <span class="text-muted cursor-pointer" @click="editLang" :data-id="item">
@@ -64,12 +64,12 @@
                         />
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div v-if="!isEdit" class="mb-3" v-for="item in languageItems">
-                        <label class="form-label required">{{  item.value.toUpperCase() }}</label>
+                    <div v-if="!isEdit" class="mb-3" v-for="item in languages">
+                        <label class="form-label required">{{  item.code.toUpperCase() }}</label>
                         <textarea
                             type="text"
                             class="form-control"
-                            :name="'text[' + item.value +']'"
+                            :name="'text[' + item.code +']'"
                             placeholder="Введите перевод"
                             @focus="hideError"
                             rows="5"
@@ -77,12 +77,12 @@
                         />
                         <div class="invalid-feedback"></div>
                     </div>
-                    <div v-if="isEdit" class="mb-3" v-for="item in languageItems">
-                        <label class="form-label required">{{  item.value.toUpperCase() }}</label>
+                    <div v-if="isEdit" class="mb-3" v-for="item in languages">
+                        <label class="form-label required">{{  item.code.toUpperCase() }}</label>
                         <textarea
                             type="text"
                             class="form-control"
-                            :name="'text[' + item.value +']'"
+                            :name="'text[' + item.code +']'"
                             placeholder="Введите перевод"
                             @focus="hideError"
                             rows="5"
@@ -124,7 +124,7 @@ export default {
                 breadcrumb: true,
                 textBreadcrumb: 'Языки',
                 nameRoute: {
-                    name: 'settingsLang',
+                    name: 'language',
                 },
             }],
             modal: {},
@@ -138,6 +138,12 @@ export default {
             },
         }
     },
+    computed: {
+        languages() {
+            return this.$store.state.settings.language;
+        },
+    },
+
     mounted() {
         this.$emit('changeHeaderData', this.headerProps);
         this.modal = new Modal(this.$refs.langModal);
@@ -154,7 +160,7 @@ export default {
             }
             let typeEdit = (this.isEdit) ? 'editLangText' : 'createdLangText';
 
-            axiosClient.post('/admin/settings/' + typeEdit , form).then((resp) => {
+            axiosClient.post('/admin/language/' + typeEdit , form).then((resp) => {
                 this.modal.hide();
                 this.getText();
 
@@ -174,7 +180,7 @@ export default {
             });
         },
         getText(){
-            axiosClient.get('/admin/settings/getLanguageText').then((resp) => {
+            axiosClient.get('/admin/language/getLanguageText').then((resp) => {
                 this.languageItems = resp.data.language;
                 this.textItems = resp.data.text;
                 this.keysItems = resp.data.keys;
@@ -220,7 +226,7 @@ export default {
         saveLangText(el){
             const element = el.target;
 
-            axiosClient.post('/admin/settings/editLangOne', {
+            axiosClient.post('/admin/language/editLangOne', {
                 text: element.value,
                 lang: element.dataset.lang,
                 key: element.dataset.id

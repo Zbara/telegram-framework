@@ -22,7 +22,7 @@ Welcome to the demo project built with Laravel! This project is designed to show
 ```sh
 git clone https://github.com/Zbara/telegram-framework.git
 
-cd code-hub
+cd telegram-framework
 ```
 2. #### Build docker
 

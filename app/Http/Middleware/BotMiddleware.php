@@ -14,6 +14,8 @@ use Telegram\Bot\Objects\Update as UpdateObject;
 class BotMiddleware
 {
     /**
+     * Middleware for user authorization in the system if it is a call via Telegram.
+     *
      * @throws AuthUserErrorException
      */
     public function handle(Request $request, Closure $next)

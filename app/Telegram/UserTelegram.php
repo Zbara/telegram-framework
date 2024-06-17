@@ -11,6 +11,11 @@ use Illuminate\Support\Str;
 use Telegram\Bot\Objects\Chat;
 use Telegram\Bot\Objects\Message;
 
+/**
+ * Auth or register user in database and login
+ *
+ * Class UserTelegram
+ */
 class UserTelegram
 {
     /**

@@ -16,6 +16,9 @@ use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
 use TypeError;
 
+/**
+ * Class TelegramKernel
+ */
 readonly class TelegramKernel
 {
     private Api $bot;
@@ -30,6 +33,8 @@ readonly class TelegramKernel
     }
 
     /**
+     * Launching webhook monitoring, the actual entry point to the bot
+     *
      * @throws TelegramSDKException
      */
     public function run(\Closure $next): mixed
@@ -76,18 +81,36 @@ readonly class TelegramKernel
         }
     }
 
-    private function isCommand($entities): bool
+    /**
+     * Check if message contains command
+     *
+     * @param $entities
+     * @return bool
+     */
+    private function isCommand(
+        $entities
+    ): bool
     {
         return $entities->contains('type', 'bot_command');
     }
 
-    private function extractCommand(string $text): ?string
+    /**
+     * Extract command from message
+     *
+     * @param string $text
+     * @return string|null
+     */
+    private function extractCommand(
+        string $text
+    ): ?string
     {
         preg_match('/^\/(\w+)\b/i', $text, $command);
         return $command[1] ?? null;
     }
 
     /**
+     * Method for executing Callback type commands
+     *
      * @throws TelegramSDKException
      * @throws BotException
      */
@@ -106,6 +129,13 @@ readonly class TelegramKernel
         $this->executeCommand(Callback::getAction());
     }
 
+    /**
+     * Command Execution Handler
+     *
+     * @param string $command
+     * @param bool $isCommand
+     * @return void
+     */
     private function executeCommand(string $command, bool $isCommand = false): void
     {
         auth()->user()->update([
@@ -120,6 +150,8 @@ readonly class TelegramKernel
     }
 
     /**
+     * Initialize commands for bot
+     *
      * @throws TelegramSDKException
      */
     private function initializeCommands(): void
@@ -132,6 +164,12 @@ readonly class TelegramKernel
         ]);
     }
 
+    /**
+     * Search for a team by name
+     *
+     * @param string $commandMessage
+     * @return string|null
+     */
     private function getCommandByText(string $commandMessage): ?string
     {
         foreach ($this->bot->getCommands() as $command) {

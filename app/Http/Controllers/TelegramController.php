@@ -12,8 +12,11 @@ class TelegramController extends Controller
         TelegramKernel $telegramKernel
     )
     {
-        return response($telegramKernel->run(
-            fn ($next) => $next
-        ), 200);
+        return response([
+            'ok' => true,
+            'message' => $telegramKernel->run(
+                fn ($next) => $next
+            )
+        ], 200);
     }
 }
